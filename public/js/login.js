@@ -8,9 +8,9 @@ btnlogin.addEventListener("click",async(e)=>{
     let res=await fetch("api/login",{
         method:"POST",
         headers:{"content-type":"application/json"},
-        body:JSON.stringify({email,pwd})
+        body:JSON.stringify({email,password:pwd}),
     });
 
     const data=await res.json();
-    alert(data);
+    alert(data.message);
 })

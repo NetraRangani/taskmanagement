@@ -37,7 +37,7 @@ exports.loginUser=async(req,res)=>{
         console.log(exists);
         
         if(exists){
-            let match= await bcrypt.compare(password,exists.password);
+            let match=bcrypt.compare(password, exists.password);
             if(match){
                 res.status(201).json({"message":"Login Successful!"});
             }else{
