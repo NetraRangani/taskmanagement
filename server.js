@@ -19,6 +19,13 @@ app.get("/register",(req,res)=>{
     res.sendFile(__dirname + "/views/registration.html");
 })
 
+app.get("/dashboard",(req,res)=>{
+    res.sendFile(__dirname + "/views/dashboard.html");
+})
+
+app.get("/sidebar",(req,res)=>{
+    res.sendFile(__dirname + "/views/sidebar.html");
+})
 
 // const loginroute=require("./routes/loginroute.js");
 // app.use("/api",loginroute);
