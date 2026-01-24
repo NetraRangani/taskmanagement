@@ -1,7 +1,6 @@
 const user=require("../models/Users")
 const bcrypt=require("bcrypt");
 // console.log("enter auth.js");
-
 exports.registerUser=async(req,res)=>{
     try{
         let {name,email,pwd,cpwd}=req.body;
@@ -39,11 +38,12 @@ exports.loginUser=async(req,res)=>{
         if(exists){
             let match=bcrypt.compare(password, exists.password);
             if(match){
-                res.status(201).json({"message":"Login Successful!"});
+                req.session.userId=exists._id;
+                // console.log(req.session.userId);
+                res.status(201).json({"message":"Login Successful!",});
             }else{
                 res.status(404).json({"message":"Incorrect email or password!"});
             }
-
         }else{
             res.status(404).json({"message":"Incorrect email or password!"});
         }

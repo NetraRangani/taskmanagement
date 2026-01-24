@@ -11,7 +11,7 @@ conn.then(()=>{
 const taskSchema=new mongoose.Schema({
     title:String,
     description:String,
-    stats:{
+    status:{
         type:String,
         enum:["Pending","In-Progress","Completed"],
         default:"Pending"

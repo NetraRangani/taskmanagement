@@ -1,18 +1,26 @@
 const express=require("express");
 const user=require("./models/Users");
 const task=require("./models/Tasks");
+const session=require("express-session");
 const app=express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
 // console.log("enter server.js");
-
+app.use(session({
+    secret:"abcDEFghiJKl123",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{maxAge:24*60*60*1000}
+}))
 const authRoutes=require("./routes/authroutes.js");
 app.use("/api",authRoutes);
 
+const taskRoutes=require("./routes/taskroutes.js");
+app.use("/task",taskRoutes)
+
 app.get("/",(req,res)=>{
     res.sendFile(__dirname + "/views/login.html");
-   
 });
 
 app.get("/register",(req,res)=>{
@@ -20,11 +28,24 @@ app.get("/register",(req,res)=>{
 })
 
 app.get("/dashboard",(req,res)=>{
+    if(!req.session.userId){
+        return res.redirect("/");
+    }
     res.sendFile(__dirname + "/views/dashboard.html");
 })
 
 app.get("/sidebar",(req,res)=>{
+    if(!req.session.userId){
+        return res.redirect("/");
+    }
     res.sendFile(__dirname + "/views/sidebar.html");
+})
+
+app.get("/tasks",(req,res)=>{
+    if(!req.session.userId){
+        return res.redirect("/");
+    }
+    res.sendFile(__dirname + "/views/tasks.html");
 })
 
 // const loginroute=require("./routes/loginroute.js");

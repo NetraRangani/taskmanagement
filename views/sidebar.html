@@ -81,29 +81,40 @@
 </head>
 <body>
 
-<div class="sidebar">
-    <h4>MyApp</h4>
+<div class="sidebar" id="sidebar">
+    <h4>Task Management</h4>
 
     <a href="/dashboard" class="active">
         <i class="fa fa-home"></i> Dashboard
     </a>
 
-    <a href="#">
-        <i class="fa fa-user"></i> Profile
+    <a href="/tasks">
+        <i class="fa-solid fa-list-check"></i> Tasks
     </a>
 
-    <a href="#">
+    <!-- <a href="#">
         <i class="fa fa-lock"></i> Security
     </a>
 
     <a href="#">
         <i class="fa fa-chart-line"></i> Reports
-    </a>
+    </a> -->
 
     <a href="/" class="logout">
         <i class="fa fa-sign-out-alt"></i> Logout
     </a>
 </div>
+<script>
+    // Get the parent page path (where dashboard is loaded)
+    const currentPath = window.parent.location.pathname;
+
+    document.querySelectorAll(".sidebar a").forEach(link => {
+        link.classList.remove("active"); // remove any active class
+        if (link.getAttribute("href") === currentPath) {
+            link.classList.add("active"); // add active if match
+        }
+    });
+</script>
 
 </body>
 </html>
