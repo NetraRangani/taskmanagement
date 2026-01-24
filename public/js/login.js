@@ -1,0 +1,16 @@
+let btnlogin=document.getElementById("btnlogin");
+
+btnlogin.addEventListener("click",async(e)=>{
+    e.preventDefault();
+    let email=document.getElementById("email").value;
+    let pwd=document.getElementById("password").value;
+
+    let res=await fetch("api/login",{
+        method:"POST",
+        headers:{"content-type":"application/json"},
+        body:JSON.stringify({email,pwd})
+    });
+
+    const data=await res.json();
+    alert(data);
+})
