@@ -17,6 +17,9 @@ btnaddtask.addEventListener("click",async(e)=>{
     let data= await res.json();
     alert(data.message);
     // console.log(data.record);
+    if(data.message==="Task Added!"){
+        window.location.href="/tasks";
+    }
 
 });
 
