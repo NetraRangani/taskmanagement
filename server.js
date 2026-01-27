@@ -48,6 +48,18 @@ app.get("/tasks",(req,res)=>{
     res.sendFile(__dirname + "/views/tasks.html");
 })
 
+app.get("/adminlogin",(req,res)=>{
+    res.sendFile(__dirname+"/views/admin/admindashboard.html");
+})
+
+app.get("/adminsidebar",(req,res)=>{
+    res.sendFile(__dirname + "/views/admin/sidebaradmin.html");
+})
+
+app.get("/admindashboard",(req,res)=>{
+    res.sendFile(__dirname + "/views/admin/admindashboard.html");
+})
+
 // const loginroute=require("./routes/loginroute.js");
 // app.use("/api",loginroute);
 // app.get("/login",(req,res)=>{

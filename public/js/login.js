@@ -14,7 +14,10 @@ btnlogin.addEventListener("click",async(e)=>{
     const data=await res.json();
     const status=res.status;
     alert(data.message);
-    if(status===201){
+    if(data.message==="Admin Login Successful"&& status===201){
+        window.location.href="/admindashboard";
+    }
+    if(status===201 && data.message!=="Admin Login Successful"){
         window.location.href="/dashboard";  
     }else if(status===404){
         window.location.href="/";
