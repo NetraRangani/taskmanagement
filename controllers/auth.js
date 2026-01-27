@@ -1,4 +1,5 @@
 const user=require("../models/Users")
+const Task=require("../models/Tasks")
 const bcrypt=require("bcrypt");
 // console.log("enter auth.js");
 exports.registerUser=async(req,res)=>{
@@ -44,7 +45,9 @@ exports.loginUser=async(req,res)=>{
             let match=bcrypt.compare(password, exists.password);
             if(match){
                 req.session.userId=exists._id;
+                req.session.role=exists.role;
                 if(exists.role==="admin"){
+                    req.session.username="admin";
                     return res.status(201).json({"message":"Admin Login Successful"});
                     // res.redirect("/admindashboard");
                 }else{
@@ -75,3 +78,54 @@ exports.allUsers=async(req,res)=>{
     }
     
 }
+
+exports.allTasks = async (req, res) => {
+    try {
+        let { user, task: tasksearch } = req.body;  
+        console.log("REQ BODY:", req.body);
+
+        let pipeline = [
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "createdBy",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            { $unwind: "$user" }
+        ];
+
+        // Apply search only if values exist
+        if (user || tasksearch) {
+            pipeline.push({
+                $match: {
+                    ...(user && { "user.name": { $regex: user, $options: "i" } }),
+                    ...(tasksearch && { title: { $regex: tasksearch, $options: "i" } })
+                }
+            });
+        }
+
+        pipeline.push({
+            $project: {
+                title: 1,
+                description: 1,
+                status: 1,
+                dueDate: 1,
+                createdAt: 1,
+                "user.name": 1,
+                "user.email": 1,
+                "user.role": 1
+            }
+        });
+
+        const result = await Task.aggregate(pipeline);
+        res.status(200).json(result);
+
+    } catch (err) {
+        console.error("ALL TASK ERROR:", err);
+        res.status(500).json({ message: "Server Error!" });
+    }
+};
+
+

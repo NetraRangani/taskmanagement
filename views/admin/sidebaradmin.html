@@ -81,11 +81,15 @@
 </head>
 <body>
 
-<div class="sidebar" id="sidebaradmin">
+<div class="sidebar" id="sidebaradmin1">
     <h4>Task Management</h4>
 
     <a href="/admindashboard" class="active">
         <i class="fa fa-home"></i> Dashboard
+    </a>
+
+    <a href="/adminviewtask">
+        <i class="fa-regular fa-note-sticky"></i> View Tasks
     </a>
 
     <!-- <a href="/tasks">
@@ -108,7 +112,7 @@
     // Get the parent page path (where dashboard is loaded)
     const currentPath = window.parent.location.pathname;
 
-    document.querySelectorAll(".sidebaradmin a").forEach(link => {
+    document.querySelectorAll(".sidebar a").forEach(link => {
         link.classList.remove("active"); // remove any active class
         if (link.getAttribute("href") === currentPath) {
             link.classList.add("active"); // add active if match

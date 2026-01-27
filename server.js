@@ -48,16 +48,27 @@ app.get("/tasks",(req,res)=>{
     res.sendFile(__dirname + "/views/tasks.html");
 })
 
-app.get("/adminlogin",(req,res)=>{
-    res.sendFile(__dirname+"/views/admin/admindashboard.html");
-})
+
 
 app.get("/adminsidebar",(req,res)=>{
+    if(!req.session.username=="admin"){
+        return res.redirect("/");
+    }
     res.sendFile(__dirname + "/views/admin/sidebaradmin.html");
 })
 
 app.get("/admindashboard",(req,res)=>{
+    if(!req.session.username=="admin" ){
+        return res.redirect("/");
+    }
     res.sendFile(__dirname + "/views/admin/admindashboard.html");
+})
+
+app.get("/adminviewtask",(req,res)=>{
+    if(!req.session.username=="admin"){
+        return res.redirect("/");
+    }
+    res.sendFile(__dirname + "/views/admin/viewTasks.html");
 })
 
 // const loginroute=require("./routes/loginroute.js");
