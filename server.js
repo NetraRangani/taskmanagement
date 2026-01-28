@@ -2,6 +2,9 @@ const express=require("express");
 const user=require("./models/Users");
 const task=require("./models/Tasks");
 const session=require("express-session");
+const jwt=require("jsonwebtoken");
+require("dotenv").config();
+const SECRET_KEY = process.env.JWT_SECRET;
 const app=express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -12,7 +15,26 @@ app.use(session({
     resave:false,
     saveUninitialized:true,
     cookie:{maxAge:24*60*60*1000}
-}))
+}));
+
+const token = jwt.sign(
+  { id: user._id, role: user.role },
+  SECRET_KEY,
+  { expiresIn: "1h" }
+);
+
+function verifyToken(req, res, next) {
+    const token = req.headers.authorization;
+
+    if (!token) return res.status(401).send("No token");
+
+    jwt.verify(token, "SECRET_KEY", (err, decoded) => {
+        if (err) return res.status(403).send("Invalid token");
+        req.user = decoded;
+        next();
+    });
+}
+
 const authRoutes=require("./routes/authroutes.js");
 app.use("/api",authRoutes);
 
@@ -51,21 +73,23 @@ app.get("/tasks",(req,res)=>{
 
 
 app.get("/adminsidebar",(req,res)=>{
-    if(!req.session.username=="admin"){
+    if(req.session.username!=="admin" ){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/sidebaradmin.html");
 })
 
-app.get("/admindashboard",(req,res)=>{
-    if(!req.session.username=="admin" ){
+app.get("/admindashboard",verifyToken,(req,res)=>{
+    console.log(req.session.username);
+    
+    if(req.session.username!=="admin" ){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/admindashboard.html");
 })
 
 app.get("/adminviewtask",(req,res)=>{
-    if(!req.session.username=="admin"){
+    if(req.session.username!=="admin" ){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/viewTasks.html");

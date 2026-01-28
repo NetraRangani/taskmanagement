@@ -43,7 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
                             <td>${item.user.name}</td>
                             <td>${item.user.email}</td>
                             <td>${item.title}</td>
+                            <td>${item.description}</td>
                             <td>${new Date(item.createdAt).toLocaleDateString()}</td>
+                            <td>${new Date(item.dueDate).toLocaleDateString()}</td>
+                            <td>${new Date(item.user.createdAt).toLocaleDateString()}</td>
+
                         </tr>
                     `;
                 });
