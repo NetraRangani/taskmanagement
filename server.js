@@ -9,7 +9,8 @@ const app=express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static("public"));
-// console.log("enter server.js");
+
+
 app.use(session({
     secret:"abcDEFghiJKl123",
     resave:false,
@@ -47,29 +48,28 @@ app.get("/",(req,res)=>{
 
 app.get("/register",(req,res)=>{
     res.sendFile(__dirname + "/views/registration.html");
-})
+});
 
 app.get("/dashboard",(req,res)=>{
     if(!req.session.userId){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/dashboard.html");
-})
+});
 
 app.get("/sidebar",(req,res)=>{
     if(!req.session.userId){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/sidebar.html");
-})
+});
 
 app.get("/tasks",(req,res)=>{
     if(!req.session.userId){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/tasks.html");
-})
-
+});
 
 
 app.get("/adminsidebar",(req,res)=>{
@@ -77,7 +77,7 @@ app.get("/adminsidebar",(req,res)=>{
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/sidebaradmin.html");
-})
+});
 
 app.get("/admindashboard",verifyToken,(req,res)=>{
     console.log(req.session.username);
@@ -86,14 +86,14 @@ app.get("/admindashboard",verifyToken,(req,res)=>{
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/admindashboard.html");
-})
+});
 
 app.get("/adminviewtask",(req,res)=>{
     if(req.session.username!=="admin" ){
         return res.redirect("/");
     }
     res.sendFile(__dirname + "/views/admin/viewTasks.html");
-})
+});
 
 // const loginroute=require("./routes/loginroute.js");
 // app.use("/api",loginroute);
@@ -103,7 +103,7 @@ app.get("/adminviewtask",(req,res)=>{
 
 app.listen(3000,()=>{
     console.log("Server running on http://localhost:3000"); 
-})
+});
 
 // user.create({
 //     name:"Netra",
